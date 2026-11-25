@@ -1,7 +1,7 @@
 
 
+
 import streamlit as st
-import time
 
 # ==========================================
 # 페이지 설정
@@ -14,28 +14,24 @@ st.set_page_config(
 )
 
 # ==========================================
-# CSS 디자인 및 액션 효과
+# 디자인 CSS
 # ==========================================
 
 st.markdown("""
 <style>
-
-/* 전체 배경 */
 .stApp {
     background: linear-gradient(135deg, #101c2b, #263b50);
-    color: #111111;
 }
 
 /* 기본 글씨 */
 html, body, [class*="css"] {
-    color: #111111 !important;
+    color: #111111;
 }
 
 /* 제목 */
 h1, h2, h3 {
     color: #ffffff !important;
     font-weight: 900 !important;
-    letter-spacing: -1px;
 }
 
 /* 일반 설명 */
@@ -46,19 +42,13 @@ h1, h2, h3 {
     line-height: 1.7;
 }
 
-/* 안내창 글씨 - 검정색 */
+/* 안내창 글씨 */
 div[data-testid="stAlert"],
 div[data-testid="stAlert"] p,
 div[data-testid="stAlert"] span,
 div[data-testid="stAlert"] div {
     color: #111111 !important;
-    font-weight: 700 !important;
-}
-
-/* 안내창 */
-div[data-testid="stAlert"] {
-    border-radius: 14px;
-    border: 2px solid rgba(0,0,0,0.12);
+    font-weight: bold !important;
 }
 
 /* 버튼 */
@@ -76,24 +66,16 @@ div[data-testid="stAlert"] {
     margin: 5px 0 10px 0;
 }
 
-/* 버튼 내부 글씨 */
 .stButton > button p,
 .stButton > button span {
     color: #111111 !important;
     font-weight: 900 !important;
 }
 
-/* 버튼 마우스 효과 */
 .stButton > button:hover {
     transform: translateY(-3px) scale(1.01);
     background: #ffe08a;
     box-shadow: 0 8px 0 #93600d;
-}
-
-/* 버튼 클릭 */
-.stButton > button:active {
-    transform: translateY(3px);
-    box-shadow: 0 2px 0 #93600d;
 }
 
 /* 입력창 */
@@ -103,37 +85,6 @@ div[data-testid="stAlert"] {
     border: 2px solid #d6a84b !important;
     border-radius: 10px !important;
     font-weight: bold !important;
-}
-
-/* 입력창 안내 글씨 */
-.stTextInput input::placeholder {
-    color: #666666 !important;
-}
-
-/* 구분선 */
-hr {
-    border-color: #8092a5;
-}
-
-/* 상단 강조 */
-.hero {
-    background: linear-gradient(120deg, #f9c74f, #f8961e);
-    padding: 24px 18px;
-    border-radius: 18px;
-    text-align: center;
-    color: #111111;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.35);
-    animation: appear 0.7s ease;
-}
-
-.hero h1 {
-    color: #111111 !important;
-    font-size: 34px;
-}
-
-.hero p {
-    color: #222222 !important;
-    font-weight: bold;
 }
 
 /* 작전 카드 */
@@ -194,27 +145,30 @@ hr {
 }
 
 @keyframes pulse {
-    0%, 100% { box-shadow: 0 0 0 rgba(255,0,0,0); }
-    50% { box-shadow: 0 0 15px rgba(255,0,0,0.35); }
+    0%, 100% {
+        box-shadow: 0 0 0 rgba(255,0,0,0);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255,0,0,0.35);
+    }
 }
 
 /* 모바일 */
 @media (max-width: 600px) {
-    .hero h1 {
-        font-size: 27px;
+    h1 {
+        font-size: 27px !important;
     }
 
     .stButton > button {
         font-size: 15px !important;
     }
 }
-
 </style>
 """, unsafe_allow_html=True)
 
 
 # ==========================================
-# 게임 상태
+# 게임 상태 관리
 # ==========================================
 
 def restart():
@@ -261,14 +215,14 @@ def panel(title, message):
 if st.session_state.page == "intro":
 
     st.markdown("""
-    <div class="hero">
-        <h1>🎖️ 유민수 상병 구하기</h1>
-        <p>OPERATION: RESCUE MIN-SOO</p>
+    <div class="panel" style="text-align:center;">
+        <h1 style="color:#111111 !important;">
+            🎖️ 유민수 상병 구하기
+        </h1>
+        <h3>OPERATION: RESCUE MIN-SOO</h3>
         <p>긴급 인질 구출 작전</p>
     </div>
     """, unsafe_allow_html=True)
-
-    st.write("")
 
     st.markdown("""
     <div class="danger">
@@ -279,7 +233,7 @@ if st.session_state.page == "intro":
 
     panel(
         "작전 목표",
-        "제한된 상황에서 올바른 판단을 내려 유민수 상병을 구출하세요."
+        "올바른 판단을 내려 유민수 상병을 구출하세요."
     )
 
     if st.button("⚔️ 작전 시작"):
@@ -356,16 +310,19 @@ elif st.session_state.page == "situation":
     """, unsafe_allow_html=True)
 
     panel(
-        "현재 작전 정보",
+        "작전 정보",
         f"담당 역할: {st.session_state.role}<br>"
-        f"성별: {st.session_state.gender}",
+        f"성별: {st.session_state.gender}"
     )
 
     if st.button("📡 상황 확인"):
+
         if st.session_state.role == "협상가":
             go("negotiator")
+
         elif st.session_state.role == "장성":
             go("general")
+
         else:
             go("police")
 
@@ -388,7 +345,6 @@ elif st.session_state.page == "negotiator":
 
     panel(
         "협상 상황",
-        "납치범이 유민수 상병을 인질로 잡고 있습니다. "
         "어떤 선택을 하시겠습니까?"
     )
 
@@ -417,7 +373,7 @@ elif st.session_state.page == "negotiator":
     st.subheader("📡 직접 협상하기")
 
     custom = st.text_input(
-        "납치범에게 전달할 협상 내용을 입력하세요.",
+        "납치범에게 전달할 협상 내용",
         placeholder="협상 내용을 입력하세요."
     )
 
@@ -441,8 +397,7 @@ elif st.session_state.page == "discount":
 
     panel(
         "협상 진행 중",
-        "납치범에게 몸값 인하를 요청합니다. "
-        "인하 비율을 선택하세요."
+        "납치범에게 몸값 인하를 요청합니다."
     )
 
     if st.button("10% 인하 요청"):
@@ -472,7 +427,7 @@ elif st.session_state.page == "discount":
 
 
 # ==========================================
-# 콩팥 손상 이후 4가지 선택
+# 콩팥 손상 이후 선택
 # ==========================================
 
 elif st.session_state.page == "kidney":
@@ -488,11 +443,8 @@ elif st.session_state.page == "kidney":
 
     panel(
         "긴급 대응 명령",
-        "유민수 상병의 생명이 위험합니다. "
         "다음 네 가지 선택 중 하나를 결정하세요."
     )
-
-    st.write("### 작전 선택")
 
     if st.button("1번. 🏥 의료 지원 및 후송"):
 
@@ -567,7 +519,7 @@ elif st.session_state.page == "custom_result":
         "공격", "죽여", "체포", "진압"
     ]):
 
-        st.error("납치범이 위협을 느끼고 협상을 중단했습니다.")
+        st.error("납치범이 협상을 중단했습니다.")
 
         if st.button("상황 확인"):
             go("kidney")
@@ -630,7 +582,7 @@ elif st.session_state.page == "police":
 
         ending(
             "구출 성공",
-            "경찰 특공대의 작전이 성공했습니다. "
+            "경찰 작전이 성공했습니다. "
             "유민수 상병을 무사히 구출했습니다.",
             True
         )
@@ -646,11 +598,82 @@ elif st.session_state.page == "police":
 
     if st.button("3번. 📋 수배 명단 등록"):
 
+        go("warrant")
+        st.rerun()
+
+
+# ==========================================
+# 경찰 수배 명단 등록 이후
+# ==========================================
+
+elif st.session_state.page == "warrant":
+
+    st.title("📋 수배 명단 등록 완료")
+
+    st.markdown("""
+    <div class="danger">
+        🚨 수배 명단에 납치범이 등록되었습니다!<br>
+        이제 추가 지원 또는 체포 작전을 선택해야 합니다.
+    </div>
+    """, unsafe_allow_html=True)
+
+    panel(
+        "다음 작전 선택",
+        "어떤 방식으로 납치범을 추적하시겠습니까?"
+    )
+
+    if st.button("1번. 🤝 도움 받기"):
+
         ending(
-            "구출 성공",
-            "수배 명단 등록 후 군대가 투입되었습니다. "
-            "유민수 상병을 구출했지만 심각한 부상과 후유증이 남았습니다.",
+            "작전 실패",
+            "도움을 주겠다고 접근한 인물에게 배신당했습니다. "
+            "결국 유민수 상병이 사망했습니다."
+        )
+        st.rerun()
+
+    if st.button("2번. 🚔 체포 작전 시작"):
+
+        go("capture")
+        st.rerun()
+
+
+# ==========================================
+# 체포 작전 - D / L 선택
+# ==========================================
+
+elif st.session_state.page == "capture":
+
+    st.title("🚔 체포 작전 시작")
+
+    st.markdown("""
+    <div class="danger">
+        ⚠️ 최종 선택 단계!<br>
+        체포 작전 중 마지막 판단을 내려야 합니다.
+    </div>
+    """, unsafe_allow_html=True)
+
+    panel(
+        "최종 작전 코드",
+        "D 또는 L 중 하나를 선택하세요. "
+        "선택에 따라 유민수 상병의 운명이 결정됩니다."
+    )
+
+    if st.button("D 선택"):
+
+        ending(
+            "🎉 구출 성공!",
+            "D 작전이 성공적으로 마무리되었습니다. "
+            "납치범이 체포되었고 유민수 상병을 구출했습니다.",
             True
+        )
+        st.rerun()
+
+    if st.button("L 선택"):
+
+        ending(
+            "작전 실패",
+            "L 작전을 선택한 결과 작전이 실패했습니다. "
+            "유민수 상병이 사망했습니다."
         )
         st.rerun()
 
@@ -671,7 +694,7 @@ elif st.session_state.page == "ending":
             f"""
             <div class="success-panel">
                 <h2 style="color:#075c21 !important;">
-                    🎉 {result['title']}
+                    {result['title']}
                 </h2>
                 <p style="color:#075c21 !important;">
                     {result['message']}
